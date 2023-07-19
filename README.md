@@ -1,50 +1,35 @@
-# Pdf Viewer component for Vaadin Flow
+# Vaadin epub viewer plugin
+## What is this
+Vaadin epub book viewer plugin, that ensures same page slicing between sessions for easier indexation.
 
-This is the server-side component of [&lt;vcf-pdf-viewer&gt; Web Component](https://github.com/vaadin-component-factory/vcf-pdf-viewer). The component uses [PDF.js](https://github.com/mozilla/pdf.js) library to display pdf files.
+Main class is `EpubReaderView` which is derived from Vaadin's `HorizontalLayout`.
 
-This component is part of Vaadin Component Factory.
+It implements `BookReader` interface which might be used to control flipping pages with custom controls or events
 
-## Description 
+# Content
+- [What is this](#what-is-this)
+- [Usage example](#usage-example)
+- [Core dependencies](#core-dependencies)
 
-Pdf Viewer component provides support to the following features:
-
-- Display a pdf file.
-- Display a thumbnail's viewer.
-- Set zoom.
-- Navigate to a certain page.
-- Open or close thumbnail's viewer.
-- Add a listener on change page when clicking on thumbnail.
-- Download the pdf file.
-
-From version 2.5.x:
-
-- Printing the pdf file (implemented with [Print.js](https://www.npmjs.com/package/print-js)).
-
-## Development instructions
-
-- Build the project and install the add-on locally:
-```
-mvn clean install
-```
-- For starting the demo server go to pdf-viewer-demo and run:
-```
-mvn jetty:run
-```
-This deploys demo at http://localhost:8080
-
-## How to use it - Example
-
+## Usage example:
 ```java
-PdfViewer pdfViewer = new PdfViewer();
-StreamResource resource = new StreamResource("example.pdf", () -> getClass().getResourceAsStream("/pdf/example.pdf"));
-pdfViewer.setSrc(resource);
-pdfViewer.openThumbnailsView();
-add(pdfViewer);    
+// your root view or component
+VerticalLayout layout = new VerticalLayout();
+
+EpubReaderView readerView = new EpubReaderView();
+String pathToBook = "/path/to/book.epub";
+
+// if book doesn't exist or unaccessible will throw IOException
+try {
+    readerView.loadBook(pathToBook);
+} catch (IOException) {
+    // your exception handling
+}
+
+layout.add(readerView);
 ```
-## Missing features or bugs
 
-You can report any issue or missing feature on [GitHub](https://github.com/vaadin-component-factory/vcf-pdf-viewer/issues).
-
-## License
-
-Apache License 2.0.
+## Core dependencies
+- vaadin-core
+- epublib-core (from [nl.siegmann.epublib](https://github.com/psiegman/epublib))
+- jsoup

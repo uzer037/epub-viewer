@@ -2,35 +2,35 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.vaadin.addons.componentfactory</groupId>
-    <artifactId>vcf-pdf-viewer-root</artifactId>
-    <version>2.7.3-SNAPSHOT</version>
+    <artifactId>epub-reader</artifactId>
+    <version>0.0.1</version>
     <packaging>pom</packaging>
     <modules>
-        <module>vcf-pdf-viewer</module>
-        <module>vcf-pdf-viewer-demo</module>
+        <module>epub-viewer</module>
+        <module>epub-viewer-demo</module>
     </modules>
-    <name>Pdf Viewer</name>
-    <description>Pdf Viewer component based on pdf.js library</description>
+    <name>Epub Viewer</name>
+    <description>Epub Viewer component + demo</description>
 
     <properties>
-        <vaadin.version>22.0.17</vaadin.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <vaadin.version>24.0.3</vaadin.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
-    <inceptionYear>2021</inceptionYear>
+    <inceptionYear>2023</inceptionYear>
     <organization>
-        <name>Vaadin Ltd</name>
-        <url>https://vaadin.com/</url>
+        <name>Nauka Ltd</name>
+        <url>https://ntik.ru/</url>
     </organization>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>vcf-pdf-viewer</artifactId>
-                <version>${vcf-pdf-viewer.version}</version>
+                <artifactId>epub-viewer</artifactId>
+                <version>${epub-viewer.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
