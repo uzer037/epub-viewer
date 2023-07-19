@@ -142,6 +142,7 @@
                     </archive>
                 </configuration>
             </plugin>
+            <!-- Required for tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

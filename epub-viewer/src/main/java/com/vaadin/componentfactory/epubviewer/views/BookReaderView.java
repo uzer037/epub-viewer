@@ -8,8 +8,11 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.componentfactory.epubviewer.bookloaders.book.Book;
 import com.vaadin.componentfactory.epubviewer.bookloaders.loader.BookLoader;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,11 +102,10 @@ public abstract class BookReaderView extends Div implements BookReader {
     }
 
     @Override
-    public void loadBook(String name) throws IOException {
+    public void loadBook(InputStream inputStream) throws IOException {
         Book newBook = null;
         try {
-            InputStream bookStream = getClass().getClassLoader().getResourceAsStream(name);
-            newBook = bookLoader.loadBook(bookStream);
+            newBook = bookLoader.loadBook(inputStream);
 
             // removing empty book
             if(newBook != null && newBook.getLastPageNumber() == 0) {
@@ -112,5 +114,12 @@ public abstract class BookReaderView extends Div implements BookReader {
         } finally {
             this.loadBook(newBook);
         }
+    }
+
+    @Override
+    public void loadBook(File file) throws IOException {
+        InputStream bookStream = new FileInputStream(file);
+        loadBook(bookStream);
+        bookStream.close();
     }
 }

@@ -2,7 +2,9 @@ package com.vaadin.componentfactory.epubviewer.views;
 
 import com.vaadin.componentfactory.epubviewer.bookloaders.book.Book;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public interface BookReader {
     public void gotoPage(int number);
@@ -14,5 +16,6 @@ public interface BookReader {
     public void prevPage();
 
     public void loadBook(Book book);
-    public void loadBook(String name) throws IOException;
+    public void loadBook(File file) throws IOException;
+    public void loadBook(InputStream inputStream) throws IOException;
 }
