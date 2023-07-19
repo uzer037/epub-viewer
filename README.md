@@ -17,11 +17,13 @@ It implements `BookReader` interface which might be used to control flipping pag
 VerticalLayout layout = new VerticalLayout();
 
 EpubReaderView readerView = new EpubReaderView();
-String pathToBook = "/path/to/book.epub";
+File bookFile = new File("/path/to/book.epub");
+
+// Alternatively, book could be loaded as InputStream or directly as Book object
 
 // if book doesn't exist or unaccessible will throw IOException
 try {
-    readerView.loadBook(pathToBook);
+    readerView.loadBook(bookFile);
 } catch (IOException) {
     // your exception handling
 }
