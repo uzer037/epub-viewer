@@ -31,7 +31,6 @@ class HtmlSlicer {
         }
         return previous;
     }
-    // TODO: Tests - splitHtmlByMarkedElement
     static List<Document> splitHtmlByMarkedElement(Document document) {
         Document preSplitDoc = document.clone();
         Document postSplitDoc = document;
@@ -72,11 +71,18 @@ class HtmlSlicer {
         }
         return List.of(preSplitDoc,postSplitDoc);
     }
+
+    /**
+     * Slices document into valid html sub-documents, whose text content is less than maxLength
+     * @param document
+     * @param maxLength
+     * @return list of valid html sub-documents
+     */
     public static List<Document> splitHtmlByContentLength(Document document, int maxLength) {
         SplitPointMarker marker = new SplitPointMarker();
         document = marker.markSplitPoints(document, maxLength);
 
-        // how much splits requiered
+        // how much splits required
         int splitCount = document.select("."+SPLIT_CLASS_NAME).size();
 
         // splitting document by split elements
@@ -93,12 +99,11 @@ class HtmlSlicer {
     }
 
     // dirty trick to make static class store some intermediate data during recursive calls
-    // TODO: Tests - class SplitPointMarker
     static class SplitPointMarker {
         Document document;
         long currentPageLength;
         long maxLength;
-        public Document markSplitPoints(Document document, long maxLength) {
+        Document markSplitPoints(Document document, long maxLength) {
             this.document = document;
             this.maxLength = maxLength;
             tryFitOnPage(this.document.root());
@@ -113,7 +118,7 @@ class HtmlSlicer {
 
             long textLength = element.text().length();
 
-            // if element fit on page - fit and return to parent
+            // if element fits on page - skip it and return to parent
             if(currentPageLength + textLength < maxLength) {
                 this.currentPageLength = this.currentPageLength + textLength;
             } else {

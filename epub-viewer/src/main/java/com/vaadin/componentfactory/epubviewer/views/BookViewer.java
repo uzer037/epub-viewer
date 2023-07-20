@@ -19,14 +19,12 @@ public class BookViewer extends Div {
     BookLoader bookLoader;
     private int currentPage = 1;
     private HorizontalLayout controlsLayout = new HorizontalLayout();
-    private Html viewerFrame = new Html("<div class=ReaderViewFrame'>Loading your book...</div>");
+    private Html viewerFrame = new Html(wrapHtmlWithViewDiv("Loading your book..."));
     private Span pageIndicator = new Span();
     private InputStream bookSource;
-
     public BookViewer() {
         add(viewerFrame);
 
-        // Controls
         Button prevPageButton = new Button("<");
         Button nextPageButton = new Button(">");
 
@@ -41,16 +39,22 @@ public class BookViewer extends Div {
         add(controlsLayout);
     }
 
-    // region Page flip notifier event system
+
     private List<ViewerPageListener> pageListeners = new ArrayList<>();
+
+    /**
+     * Adds event listener to notify when page was flipped
+     * @param listener
+     */
     public void addReaderPageListener(ViewerPageListener listener) {
         pageListeners.add(listener);
     }
-    // endregion
+
     public void gotoPage(int number) throws IndexOutOfBoundsException{
         try {
             currentPage = number;
             showPage(bookLoader.getPage(currentPage));
+            pageListeners.stream().forEach(listener->listener.notifyPageChanged(currentPage));
             controlsLayout.setEnabled(true);
         } catch (IndexOutOfBoundsException e) {
             showMessage("Book could not be loaded.");
@@ -91,7 +95,6 @@ public class BookViewer extends Div {
      * @param bookFormat if specified incorrectly will throw exception or return garbage
      */
     public void setBookSource(InputStream bookSource, BookFormatEnum bookFormat) {
-        // TODO: add book format check
         switch (bookFormat) {
             case EPUB:
                 bookLoader = new EpubLoader();
@@ -101,13 +104,23 @@ public class BookViewer extends Div {
     }
 
     void showPage(String htmlPage) {
-        viewerFrame.setHtmlContent("<div class=ReaderViewFrame'>" + htmlPage + "</div>");
+        viewerFrame.setHtmlContent(wrapHtmlWithViewDiv(htmlPage));
         pageIndicator.setText(String.valueOf(currentPage + " / " + bookLoader.getPagesCount()));
     }
 
     void showMessage(String text) {
-        viewerFrame.setHtmlContent(
-                "<div class=ReaderViewFrame'>" + text + "</div>"
-        );
+        viewerFrame.setHtmlContent(wrapHtmlWithViewDiv(text));
+    }
+
+    /**
+     * Vaadin's Html component requires root element to always be the same,
+     * so for this class to work it has to be wrapped with some element which always stays the same.
+     * Using raw html with Vaadin is usually bad idea, but it is what required in this specific case
+     * so better using single function for this everywhere rather wrapping html by hand and risking typos
+     * @param html
+     * @return html wrapped with div
+     */
+    private String wrapHtmlWithViewDiv(String html) {
+        return "<div class='ReaderViewFrame'>" + html + "</div>";
     }
 }

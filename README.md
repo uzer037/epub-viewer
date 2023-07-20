@@ -16,19 +16,24 @@ It implements `BookReader` interface which might be used to control flipping pag
 // your root view or component
 VerticalLayout layout = new VerticalLayout();
 
-EpubReaderView readerView = new EpubReaderView();
+BookViewer readerView = new BookViewer();
 File bookFile = new File("/path/to/book.epub");
+// make sure that file exists and is in fact epub
+// ...
 
-// Alternatively, book could be loaded as InputStream or directly as Book object
+// Sets book source, but doesn't load from it to conserve resources
+// Currently supports only Epub book format
+InputStream targetStream = new FileInputStream(initialFile);
+readerView.setBookSource(bookStream, BookFormatEnum.EPUB);
 
-// if book doesn't exist or unaccessible will throw IOException
-try {
-    readerView.loadBook(bookFile);
-} catch (IOException) {
-    // your exception handling
-}
-
+// Book will be loaded only when component is added somewhere
 layout.add(readerView);
+
+// other code
+// ...
+        
+// close stream only after component is added to page
+bookStream.close();
 ```
 
 ## Core dependencies

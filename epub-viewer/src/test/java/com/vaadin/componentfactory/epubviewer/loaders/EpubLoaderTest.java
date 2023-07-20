@@ -20,7 +20,7 @@ class EpubLoaderTest {
     @Test
     void testThatPageSlicerWorksAtAll() throws IOException{
         EpubLoader loader = new EpubLoader();
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(simpleBookFileName);
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(xhtmlExampleFileName);
         final Document document = new Document(inputStream.readAllBytes().toString());
         inputStream.close();
 
@@ -109,7 +109,7 @@ class EpubLoaderTest {
 
         // page number should be between 1 and loader.getPagesCount()
         assertThrows(IndexOutOfBoundsException.class, ()->loader.getPage(0));
-        assertThrows(IndexOutOfBoundsException.class, ()->loader.getPage(pagesCount));
+        assertThrows(IndexOutOfBoundsException.class, ()->loader.getPage(pagesCount+1));
 
         /*
          *  JSoup internally makes sure that string will be interpreted as valid html

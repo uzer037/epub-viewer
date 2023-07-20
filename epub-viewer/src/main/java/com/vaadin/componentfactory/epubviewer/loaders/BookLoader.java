@@ -6,8 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public interface BookLoader {
-    // Planning Epub, fb2 and pdf support, else is optional
-
+    // Planning Epub, pdf and probably fb2 support
     /**
      * Loads book data from stream provided
      * @param stream book file stream

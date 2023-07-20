@@ -22,7 +22,7 @@ public class EpubLoader implements BookLoader {
     private List<String> pages = new ArrayList<>();
     private final EpubReader epubReader = new EpubReader();
 
-    // for auto-testing
+    // package-private getter for auto-testing
     Map<String, String> getImagesMap() {
         return imageMap;
     }
