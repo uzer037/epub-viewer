@@ -11,7 +11,7 @@ public class MainLayout extends AppLayout {
     public MainLayout() {
         final DrawerToggle drawerToggle = new DrawerToggle();
 
-        final RouterLink basicExample = new RouterLink("Basic book example", BasicView.class);
+        final RouterLink basicExample = new RouterLink("Basic epub book example", BasicEpubView.class);
         final RouterLink noBookExample = new RouterLink("No book example", NoBook.class);
 
 

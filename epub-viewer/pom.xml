@@ -186,6 +186,7 @@
                         <configuration>
                             <excludes>
                                 <exclude>**/views/**</exclude>
+                                <exclude>**/*Enum.*</exclude>
                             </excludes>
                         </configuration>
                     </execution>

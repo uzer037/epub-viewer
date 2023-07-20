@@ -1,4 +1,4 @@
-package com.vaadin.componentfactory.epubviewer.bookloaders.loader;
+package com.vaadin.componentfactory.epubviewer.loaders;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

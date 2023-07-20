@@ -1,6 +1,6 @@
 package com.vaadin.componentfactory.epubviewer;
 
-import com.vaadin.componentfactory.epubviewer.views.EpubReaderView;
+import com.vaadin.componentfactory.epubviewer.views.BookViewer;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.Route;
 
@@ -11,15 +11,7 @@ import java.io.InputStream;
 public class NoBook extends Div {
 
   public NoBook() {
-      EpubReaderView epubViewer = new EpubReaderView();
-      String bookName = "";
-      InputStream bookStream = getClass().getClassLoader().getResourceAsStream(bookName);
-      try {
-          epubViewer.loadBook(bookStream);
-      } catch (IOException e) {
-          System.out.println("Book not found: " + e);
-      }
-
+      BookViewer epubViewer = new BookViewer();
       add(epubViewer);
   }
   
