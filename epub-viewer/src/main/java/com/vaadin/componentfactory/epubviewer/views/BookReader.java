@@ -14,8 +14,6 @@ public interface BookReader {
 
     /** Flips to the previous page. If on first page - does nothing */
     public void prevPage();
-
-    public void loadBook(Book book);
     public void loadBook(File file) throws IOException;
     public void loadBook(InputStream inputStream) throws IOException;
 }

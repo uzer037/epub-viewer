@@ -18,6 +18,25 @@
         <url>https://ntik.ru/</url>
     </organization>
 
+    <developers>
+        <developer>
+            <id>uzer037</id>
+            <name>Dmitry Dolgishev</name>
+            <email>dolgishev02job@gmail.com</email>
+            <roles>
+                <role>coder</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Anton Dmitrochenko</name>
+            <!-- add info about yourself -->
+            <roles>
+                <role>code review</role>
+                <role>lead developer</role>
+            </roles>
+        </developer>
+    </developers>
+
     <properties>
         <vaadin.version>24.0.3</vaadin.version>
         <maven.compiler.source>17</maven.compiler.source>

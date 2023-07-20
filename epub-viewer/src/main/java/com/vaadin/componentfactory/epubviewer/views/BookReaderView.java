@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +40,8 @@ public abstract class BookReaderView extends Div implements BookReader {
         add(controlsLayout);
     }
 
-    public interface ReaderPageListener {
-        public void onPageFlipped(int pageNumber);
-    }
+    // region Page flip notifier event system
     private List<ReaderPageListener> pageListeners = new ArrayList<>();
-
     public void addReaderPageListener(ReaderPageListener listener) {
         pageListeners.add(listener);
     }
@@ -60,6 +56,7 @@ public abstract class BookReaderView extends Div implements BookReader {
             controlsLayout.setEnabled(true);
         }
     }
+    // endregion
 
     private void replaceText(String text) {
         viewerFrame.setHtmlContent(
@@ -74,7 +71,7 @@ public abstract class BookReaderView extends Div implements BookReader {
         } else {
             currentPage = number;
             for (ReaderPageListener listener : pageListeners) {
-                listener.onPageFlipped(number);
+                listener.pageNotifyListener(number);
             }
             redrawView();
         }
@@ -94,8 +91,7 @@ public abstract class BookReaderView extends Div implements BookReader {
         }
     }
 
-    @Override
-    public void loadBook(Book book) {
+    void loadBook(Book book) {
         this.book = book;
         currentPage = 1;
         redrawView();
