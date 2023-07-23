@@ -185,8 +185,8 @@
                         </goals>
                         <configuration>
                             <excludes>
+                                <exclude>**/enums/**</exclude>
                                 <exclude>**/views/**</exclude>
-                                <exclude>**/*Enum.*</exclude>
                             </excludes>
                         </configuration>
                     </execution>

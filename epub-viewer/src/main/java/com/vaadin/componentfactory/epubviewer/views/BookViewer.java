@@ -1,7 +1,7 @@
 package com.vaadin.componentfactory.epubviewer.views;
 
-import com.vaadin.componentfactory.epubviewer.BookFormatEnum;
-import com.vaadin.componentfactory.epubviewer.loaders.EpubLoader;
+import com.vaadin.componentfactory.epubviewer.views.enums.BookFormatEnum;
+import com.vaadin.componentfactory.epubviewer.loaders.epub.EpubLoader;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.button.Button;
@@ -16,12 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookViewer extends Div {
-    BookLoader bookLoader;
-    private int currentPage = 1;
+    private BookLoader bookLoader;
+    private int currentPageNumber = 1;
+    private boolean showControls = true;
     private HorizontalLayout controlsLayout = new HorizontalLayout();
     private Html viewerFrame = new Html(wrapHtmlWithViewDiv("Loading your book..."));
     private Span pageIndicator = new Span();
     private InputStream bookSource;
+    private final List<ViewerPageListener> pageListeners = new ArrayList<>();
+
     public BookViewer() {
         add(viewerFrame);
 
@@ -40,8 +43,6 @@ public class BookViewer extends Div {
     }
 
 
-    private List<ViewerPageListener> pageListeners = new ArrayList<>();
-
     /**
      * Adds event listener to notify when page was flipped
      * @param listener
@@ -50,33 +51,70 @@ public class BookViewer extends Div {
         pageListeners.add(listener);
     }
 
-    public void gotoPage(int number) throws IndexOutOfBoundsException{
-        try {
-            currentPage = number;
-            showPage(bookLoader.getPage(currentPage));
-            pageListeners.stream().forEach(listener->listener.notifyPageChanged(currentPage));
+    /**
+     * Tries to go to page with given number and render it in component's view
+     * @param number integer from 1 to getPagesCount()
+     * @throws IndexOutOfBoundsException if page with given number does not exist
+     */
+    public void gotoPage(int number) {
+        controlsLayout.setEnabled(false);
+        currentPageNumber = number;
+        showPage(bookLoader.getPage(currentPageNumber));
+        pageListeners.stream().forEach(listener->listener.onPageChanged(currentPageNumber));
+        if (showControls)
+        {
             controlsLayout.setEnabled(true);
-        } catch (IndexOutOfBoundsException e) {
-            showMessage("Book could not be loaded.");
-            controlsLayout.setEnabled(false);
         }
     }
 
-    public void gotoNextPage(){
-        if(currentPage < bookLoader.getPagesCount()) {
-            gotoPage(currentPage + 1);
+    /**
+     * Whether to show component's built-in controls
+     * @param visible
+     */
+    public void setShowControls(boolean visible) {
+        showControls = visible;
+        controlsLayout.setEnabled(showControls);
+        controlsLayout.setVisible(showControls);
+    }
+
+    /**
+     * Tries switch to next page. If there is none - does nothing.
+     */
+    public void gotoNextPage() {
+        if(currentPageNumber < bookLoader.getPagesCount()) {
+            gotoPage(currentPageNumber + 1);
         }
     }
 
+    /**
+     * Tries switch to previous page. If there is none - does nothing.
+     */
     public void gotoPrevPage() {
-        if(currentPage > 1) {
-            gotoPage(currentPage - 1);
+        if(currentPageNumber > 1) {
+            gotoPage(currentPageNumber - 1);
         }
     }
 
-    @Override
-    protected void onAttach(AttachEvent attachEvent) {
-        super.onAttach(attachEvent);
+    /**
+     * @return current page number (from 1 to lastPageNumber)
+     */
+    public int getCurrentPageNumber() {
+        return currentPageNumber;
+    }
+
+    /**
+     * @return total pages count in current book. If book has no pages or was not loaded will return 0.
+     */
+    public int getPagesCount() {
+        return bookLoader.getPagesCount();
+    }
+
+    /**
+     * Loads book from source, specified with setBookSource()
+     * Automatically called on attaching component (onAttach event)
+     * but could be manually called again to load new books
+     */
+    public void loadBook() {
         if (bookLoader == null) {
             showMessage("Was not given any book.");
         } else {
@@ -87,6 +125,17 @@ public class BookViewer extends Div {
                 showMessage("Requested book is not found.");
             }
         }
+    }
+
+    /**
+     * Called when component is attached and loads book from source specified with setBookSource().
+     * If no book was loaded, displays error message in component's view.
+     * @param attachEvent as described in Vaadin docs
+     */
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        super.onAttach(attachEvent);
+        loadBook();
     }
 
     /**
@@ -105,7 +154,7 @@ public class BookViewer extends Div {
 
     void showPage(String htmlPage) {
         viewerFrame.setHtmlContent(wrapHtmlWithViewDiv(htmlPage));
-        pageIndicator.setText(String.valueOf(currentPage + " / " + bookLoader.getPagesCount()));
+        pageIndicator.setText(String.valueOf(currentPageNumber + " / " + bookLoader.getPagesCount()));
     }
 
     void showMessage(String text) {

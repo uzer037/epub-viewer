@@ -1,5 +1,9 @@
 package com.vaadin.componentfactory.epubviewer;
 
+import com.vaadin.componentfactory.epubviewer.views.BasicEpubView;
+import com.vaadin.componentfactory.epubviewer.views.CustomControlsView;
+import com.vaadin.componentfactory.epubviewer.views.NoBookView;
+import com.vaadin.componentfactory.epubviewer.views.PageListenerView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -12,10 +16,17 @@ public class MainLayout extends AppLayout {
         final DrawerToggle drawerToggle = new DrawerToggle();
 
         final RouterLink basicExample = new RouterLink("Basic epub book example", BasicEpubView.class);
-        final RouterLink noBookExample = new RouterLink("No book example", NoBook.class);
+        final RouterLink noBookExample = new RouterLink("Example when no book was provided", NoBookView.class);
+        final RouterLink pageListenerExample = new RouterLink("Page update listener use example", PageListenerView.class);
+        final RouterLink customControlsExample = new RouterLink("Custom controls example", CustomControlsView.class);
 
 
-        final VerticalLayout menuLayout = new VerticalLayout(basicExample, noBookExample);
+        final VerticalLayout menuLayout = new VerticalLayout(
+                basicExample,
+                noBookExample,
+                pageListenerExample,
+                customControlsExample
+        );
         addToDrawer(menuLayout);
         addToNavbar(drawerToggle);
     }

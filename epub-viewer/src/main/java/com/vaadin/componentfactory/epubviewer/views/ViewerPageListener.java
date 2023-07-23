@@ -1,5 +1,9 @@
 package com.vaadin.componentfactory.epubviewer.views;
 
 public interface ViewerPageListener {
-    public void notifyPageChanged(int pageNumber);
+    /**
+     * Listener function for page flip event
+     * @param pageNumber
+     */
+    void onPageChanged(int pageNumber);
 }

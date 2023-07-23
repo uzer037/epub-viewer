@@ -1,14 +1,12 @@
 package com.vaadin.componentfactory.epubviewer.loaders;
 
-import com.vaadin.flow.server.NoInputStreamException;
-
 import java.io.IOException;
 import java.io.InputStream;
 
 public interface BookLoader {
     // Planning Epub, pdf and probably fb2 support
     /**
-     * Loads book data from stream provided
+     * Loads book data from provided input stream
      * @param stream book file stream
      * @throws IOException if InputStream or underlying file does not exist or inaccessible
      */
@@ -16,8 +14,8 @@ public interface BookLoader {
 
     /**
      * @param pageNumber
-     * @return Html string for given page
-     * @throws IndexOutOfBoundsException if there is no page with such index
+     * @return Html string for page with given number
+     * @throws IndexOutOfBoundsException if there is no page with such number
      */
     String getPage(int pageNumber) throws IndexOutOfBoundsException;
 

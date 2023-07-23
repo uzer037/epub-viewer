@@ -9,9 +9,12 @@ It implements `BookReader` interface which might be used to control flipping pag
 # Content
 - [What is this](#what-is-this)
 - [Usage example](#usage-example)
+  - [Basic example](#basic-example)
+  - [Page flip event listener example](#onpagelistener-usage)
 - [Core dependencies](#core-dependencies)
 
-## Usage example:
+## Usage examples
+### Basic example:
 ```java
 // your root view or component
 VerticalLayout layout = new VerticalLayout();
@@ -34,6 +37,32 @@ layout.add(readerView);
         
 // close stream only after component is added to page
 bookStream.close();
+```
+
+
+### Page flip event listener example:
+```java
+class MyClass extends VerticalLayout implements ViewerPageListener {
+    private BookViewer epubViewer = new BookViewer();
+    private Span pageNumberIndicator = new Span();
+    
+    public MyClass() {
+        // registering listener
+        epubViewer.addReaderPageListener(this::onPageChanged);
+        
+        // attaching component
+        add(epubViewer);
+        
+        // rest of constructor
+        // ...
+    }
+    
+    @Override
+    public void onPageChanged(int pageNumber) {
+        // your code here
+        pageNumberIndicator.setText("Page number: " + pageNumber);
+    }
+}
 ```
 
 ## Core dependencies
